@@ -1,6 +1,6 @@
 /**
  *
- * @name:  mysql-ksDB
+ * @name:  mysql-ksdb
  * @author: prilidianohussey 
  * @email: prilidianohussey74@gmail.com
  * @link: http://gdoa.top

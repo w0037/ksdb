@@ -5,7 +5,7 @@
  Source Server Type    : MySQL
  Source Server Version : 50641
  Source Host           : localhost:3306
- Source Schema         : mysql-ksDB
+ Source Schema         : mysql-ksdb
 
  Target Server Type    : MySQL
  Target Server Version : 50641
@@ -130,7 +130,7 @@ INSERT INTO `rt_adminlog` VALUES (36, 1, '删除菜单', '{\"id\":\"13\"}', '::f
 INSERT INTO `rt_adminlog` VALUES (37, 1, '编辑菜单', '{\"title\":\"数据库设计\",\"route\":\"db/list\",\"href\":\"db/list.html\",\"icon\":\"layui-icon layui-icon-template-1\",\"type\":\"1\",\"order_num\":\"3\",\"id\":\"35\",\"pid\":\"2\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0', '/menu/edit', 'POST', 1690968218, 'admin_op', 0);
 INSERT INTO `rt_adminlog` VALUES (38, 1, '编辑菜单', '{\"title\":\"日志管理\",\"route\":\"logs/list\",\"href\":\"logs/list.html\",\"icon\":\"layui-icon layui-icon-spread-left\",\"type\":\"1\",\"order_num\":\"12\",\"id\":\"12\",\"pid\":\"2\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0', '/menu/edit', 'POST', 1690968259, 'admin_op', 0);
 INSERT INTO `rt_adminlog` VALUES (39, 1, 'admin用户登录', '{\"username\":\"admin\",\"captcha\":\"6\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0', '/login/loginIn', 'POST', 1690968910, 'admin_login', 0);
-INSERT INTO `rt_adminlog` VALUES (40, 1, '添加数据库', '{\"database\":\"mysql-ksDB\",\"user\":\"root\",\"password\":\"root\",\"host\":\"127.0.0.1\",\"port\":\"3306\",\"prefix\":\"rt_\",\"encoding\":\"utf8\",\"shost\":\"127.0.0.1\",\"sport\":\"22\",\"suser\":\"root\",\"stype\":\"1\",\"spass\":\"\",\"file\":\"\",\"spath\":\"\",\"ssh\":\"0\",\"isdef\":1,\"id\":2,\"safeList\":[]}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0', '/db/confAdd', 'POST', 1690969164, 'admin_op', 0);
+INSERT INTO `rt_adminlog` VALUES (40, 1, '添加数据库', '{\"database\":\"mysql-ksdb\",\"user\":\"root\",\"password\":\"root\",\"host\":\"127.0.0.1\",\"port\":\"3306\",\"prefix\":\"rt_\",\"encoding\":\"utf8\",\"shost\":\"127.0.0.1\",\"sport\":\"22\",\"suser\":\"root\",\"stype\":\"1\",\"spass\":\"\",\"file\":\"\",\"spath\":\"\",\"ssh\":\"0\",\"isdef\":1,\"id\":2,\"safeList\":[]}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0', '/db/confAdd', 'POST', 1690969164, 'admin_op', 0);
 INSERT INTO `rt_adminlog` VALUES (41, 1, '更换数据库', '{\"id\":\"1\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0', '/db/confChange', 'POST', 1690969181, 'admin_op', 0);
 INSERT INTO `rt_adminlog` VALUES (42, 1, '备份数据', '{}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0', '/db/backup', 'POST', 1690969214, 'admin_op', 0);
 INSERT INTO `rt_adminlog` VALUES (43, 1, '还原数据', '{\"file\":\"gdcms-2023-08-02_17:40:13.sql\"}', '::ffff:127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0', '/db/reback', 'POST', 1690969249, 'admin_op', 0);
@@ -186,7 +186,7 @@ CREATE TABLE `rt_database` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `rt_database` VALUES (1, 'gdcms', '127.0.0.1', 8889, 'root', 'root', 0, 'utf8', 0, 'rt_', 0, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `rt_database` VALUES (2, 'mysql-ksDB', '127.0.0.1', 3306, 'root', 'root', 0, 'utf8', 1, 'rt_', 0, '127.0.0.1', 22, 'root', 1, '', '');
+INSERT INTO `rt_database` VALUES (2, 'mysql-ksdb', '127.0.0.1', 3306, 'root', 'root', 0, 'utf8', 1, 'rt_', 0, '127.0.0.1', 22, 'root', 1, '', '');
 COMMIT;
 
 -- ----------------------------
