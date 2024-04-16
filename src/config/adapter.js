@@ -37,7 +37,7 @@ exports.model = {
   },
   mysql: {
     handle: mysql,
-    database: 'mysql_ksDB',
+    database: 'mysql-ksDB',
     prefix: 'rt_',
     encoding: 'utf8',
     host: '127.0.0.1',
@@ -49,7 +49,7 @@ exports.model = {
   // sqlite: {
   //   handle: sqlite, // Adapter handle
   //   path: path.join(think.ROOT_PATH, 'data/sqlite'), // sqlite 保存的目录
-  //   database: 'mysql_ksDB', // 数据库名
+  //   database: 'mysql-ksDB', // 数据库名
   //   connectionLimit: 1, // 连接池的连接个数，默认为 1
   //   prefix: 'rt_', // 数据表前缀，如果一个数据库里有多个项目，那项目之间的数据表可以通过前缀来区分
   // }
