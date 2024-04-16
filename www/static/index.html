@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="/static/favicon.ico" type="image/vnd.microsoft.icon" />
+    <title>管理首页</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 样 式 文 件 -->
+    <link rel="stylesheet" href="/static/css/layui.css" />
+</head>
+
+<body>
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <!-- 头部区域（可配合layui 已有的水平导航） -->
+            <ul class="layui-nav" id="menuarea" lay-filter="filter-nav">
+                <!-- 移动端显示 -->
+                
+            </ul>
+            <script id="menutpl" type="text/html">
+                <!--li class="layui-nav-item layui-this" >
+                    <a href="javascript:;" id="homehref">首页</a>
+                </li-->
+                {{#  layui.each(d, function(index, item){ }}
+                <li class="layui-nav-item
+                {{#  if(index < 1){ }}  layui-this{{#  } }}">
+                    <a href="javascript:;"
+                    {{#  if(item.href){ }} url="{{= item.href }}"{{#  } }}
+                    >{{= item.title }}</a>
+                    {{#  if(item.children && item.children.length > 0){ }}
+                    <dl class="layui-nav-child">
+                        {{#  layui.each(item.children, function(ckey, citem){ }}
+                        <dd><a href="javascript:;"
+                            {{#  if(citem.href){ }} url="{{= citem.href }}"{{#  } }}
+                            >{{= citem.title }}</a>
+                        </dd>
+                        {{#  }); }}
+                    </dl>
+                    {{#  } }}
+                </li>
+                {{#  }); }}
+            </script>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item" id="refresh">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-refresh"
+                            style="font-size: 20px; color: #ffffff;"></i></a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;" id="changepwd"><i class="layui-icon layui-icon-password"
+                            style="font-size: 20px; color: #ffffff;"></i></a>
+                </li>
+                <li class="layui-nav-item" id="loginOut">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-logout"
+                            style="font-size: 20px; color: #ffffff;"></i></a>
+                </li>
+                
+
+
+            </ul>
+        </div>
+
+        <div class="layui-body" style="width: 100%;left:0;">
+            <!-- 内容主体区域 -->
+            <iframe style="width:100%;height:100%;" scrolling="auto" frameborder="0" id="appframe"
+                        src=""></iframe>
+        </div>
+        <div class="layui-footer" style="width: 100%;left:0;text-align: center;">
+            <!-- 底部固定区域 -->
+            Copyright &copy; 2023 <a href="http://gdoa.top/" target="_blank">GodoOA</a> LGPL Licensed
+        </div>
+    </div>
+    <script src="/static/js/layui.js"></script>
+    <script>
+        //JS 
+        function setIframeHeight(iframe) {
+            if (iframe) {
+                var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;//兼容
+                if (iframeWin.document.body) {
+                    iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;//滚动条高度
+                }
+            }
+        };
+
+        window.onload = function () {
+            setIframeHeight(document.getElementById('appframe'));
+        };
+        layui.extend({
+				api: '{/}/static/js/api' // 开头特定符 {/} 即代表采用单独路径
+		}).use(['api'], function () {
+            let element = layui.element,
+            layer = layui.layer,
+            laytpl = layui.laytpl,
+            util = layui.util,
+            $ = layui.$,
+            api = layui.api;
+            let menuData = api.getMenu();
+            // 渲染并输出结果
+            //console.log(menuData)
+            laytpl($("#menutpl").html()).render(menuData, function(str){
+              $('#menuarea').html(str)
+            });
+            element.render('nav', 'filter-nav');
+            $('#menuarea').on("click", "a", e=>{
+                //console.log(e)
+                let url = $(e.target).attr('url');
+                //console.log(url)
+                if(url){
+                    $('#appframe').attr("src", url);
+                    location.hash = '#'+url;
+                    $("#menuarea li").removeClass("layui-this")
+                    console.log(e.target.parentNode.nodeName)
+                    if(e.target.parentNode.nodeName === "DD") {
+                        //console.log($(e.target).parent().parent())
+                        $(e.target).parent().parent().parent().addClass("layui-this")
+                    }else{
+                        $(e.target).addClass("layui-this")
+                    }
+
+                }
+            })
+            function initFrame() {
+                let homeUrl = "/static/res/index/welcome.html";
+                $("#homehref").attr('url', homeUrl);
+                let hash = location.hash;
+                if(hash) {
+                    $('#appframe').attr("src", hash.replace("#",""))
+                }else{
+                    $('#appframe').attr("src", homeUrl)
+                }
+            }
+            initFrame();
+            $('#refresh').click(e => {
+                let loadIndex = layer.load(2);
+                
+                setTimeout(function(){
+                    initFrame();
+                    layer.close(loadIndex)
+                }, 1000);
+            })
+            $("#changepwd").click( e => {
+                layer.open({
+                    type: 2,
+                    title: '修改密码',
+                    shade: 0.1,
+                    area: ['50%', '50%'],
+                    anim: 1,
+                    maxmin: true,
+                    content: '/static/res/admin/changepwd.html'
+                });
+            })
+            //console.log(location.hash)
+            api.get("auth/isLogin");
+
+
+            $("#loginOut").click(e => {
+                layer.confirm('确认要退出？', {icon: 3}, function(){
+                    api.get('login/loginOut', res => {
+                        api.clearToken();
+                        location.href = '/static/login.html'
+                    })
+                  });
+                
+            })
+
+        });
+    </script>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?ca890bcccdb3a7bfcdceb6e5288a660b";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+	<meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+
+	<link rel="icon" href="./favicon.ico" type="image/vnd.microsoft.icon" />
+	<title>登陆</title>
+	<!-- 样 式 文 件 -->
+	<link rel="stylesheet" href="./css/layui.css" />
+	<link rel="stylesheet" href="./css/login.css" />
+
+</head>
+<!-- 代 码 结 构 -->
+
+<body background="./image/background.svg" style="background-size: cover;">
+	<form class="layui-form" action="javascript:void(0);">
+		<div class="layui-form-item">
+			<img class="logo" src="./image/logo.png" />
+			<div class="title">ksDB</div>
+		</div>
+		<div class="layui-form-item">
+			<input placeholder="用户名" value="admin" name="username" id="username" lay-verify="required"
+				lay-reqtext="请填写用户名" lay-affix="clear" hover class="layui-input" />
+		</div>
+		<div class="layui-form-item">
+			<input placeholder="密码" type="password" value="admin" name="password" id="password" lay-verify="required"
+				lay-reqtext="请填写密码" lay-affix="clear" hover class="layui-input" />
+		</div>
+		<div class="layui-form-item">
+			<input placeholder="验证码" name="captcha" id="captcha" hover lay-verify="required"
+				class="code layui-input layui-input-inline" />
+			<img src="" id="captchaImg" class="codeImage" />
+		</div>
+		<div class="layui-form-item">
+			<button type="button" class="layui-btn layui-btn-lg layui-btn-fluid layui-btn-warm login" lay-submit
+				lay-filter="login">
+				登 入
+			</button>
+		</div>
+
+
+	</form>
+	<div class="layui-footer" style="width: 100%;padding-top:200px;text-align: center;">
+		<!-- 底部固定区域 -->
+		Copyright &copy; 2023 <a href="http://gdoa.top/" target="_blank">GodoOA</a> LGPL Licensed
+	</div>
+	<script crossorigin src="./js/layui.js"></script>
+	<script>
+		layui.extend({
+			api: '{/}./js/api' // 开头特定符 {/} 即代表采用单独路径
+		});
+		layui.use(['api'], function () {
+			let $ = layui.$;
+			let form = layui.form;
+			let layer = layui.layer;
+			let util = layui.util;
+			let api = layui.api;
+			//console.log($)
+			let changeImg = () => {
+				api.get('login/captcha?t=' + Math.random(), res => {
+					//console.log(res)
+					const img = `data:image/svg+xml;base64,${window.btoa(res.svg)}`;
+					$('#captchaImg').attr('src', img);
+				})
+				//$('#captchaImg').attr('src',api.apiUrl + 'login/captcha?t='+ Math.random());
+			}
+			changeImg();
+			$('#captchaImg').click(() => {
+				changeImg();
+			});
+			$('#captcha').on('keydown', (e) => {
+				if (e.keyCode == 13) {
+					$(".login").trigger("click");
+					return false
+				}
+			});
+			//api.get('login/test')
+			//api.get('login/index')
+			// 提交事件
+			form.on('submit(login)', function (data) {
+				let field = data.field; // 获取表单字段值
+				let loadIndex = layer.msg('登录中', {
+					icon: 16,
+					shade: 0.01
+				});
+				api.post('login/loginIn', field, res => {
+					layer.msg('登录成功', { icon: 1 })
+					layer.close(loadIndex);
+					//console.log(res)
+					api.setToken(res.token);
+					api.setMenu(res.menus);
+					location.href = './index.html';
+				}, err => {
+					changeImg();
+				})
+			})
+
+
+		})
+	</script>
+</body>
+
+</html>

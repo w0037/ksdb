@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>sql查询</title>
+    <link rel="stylesheet" href="/static/css/layui.css" />
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <style>
+        .layui-textarea {
+            height: 220px;
+        }
+    </style>
+</head>
+
+<body class="container">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-form-item layui-form-text">
+                <textarea name="code" placeholder="请输入SQL语句" id="code" class="layui-textarea"></textarea>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <button type="button" class="layui-btn layui-btn-md layui-btn-primary" id="run">
+                    <i class="layui-icon layui-icon-search"></i>
+                    查询
+                </button>
+                <button type="button" class="layui-btn layui-btn-md layui-btn-success" id="butitySql">
+                    <i class="layui-icon layui-icon-light"></i>
+                    美化
+                </button>
+                <button type="button" class="layui-btn layui-btn-md" id="reset">
+                    <i class="layui-icon layui-icon-refresh"></i>
+                    重置
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="layui-card">
+        <div class="layui-card-body" id="result">
+            <table class="layui-hide" id="table-data"></table>
+        </div>
+    </div>
+
+
+    <script src="/static/js/layui.js"></script>
+    <script src="/static/js/sql.js"></script>
+    <script>
+        layui.extend({
+            api: '{/}/static/js/api' // 开头特定符 {/} 即代表采用单独路径
+        });
+        layui.use([
+            'api'
+        ], function () {
+            let table = layui.table;
+            let layer = layui.layer;
+            let api = layui.api;
+            let $ = layui.$;
+            let req = api.req();
+
+            let MODULE_PATH = "./";
+            if (req.table) {
+                api.get('db/getSql?table=' + req.table, res => {
+                    console.log(res)
+                    $('#code').val(res);
+                })
+            }
+            $('#butitySql').click((e) => {
+                //console.log(e)
+                let sql = $('#code').val();
+                if (sql) {
+                    try {
+                        let str = sqlFormatter.format(sql, {
+                            language: 'mysql',
+                            uppercase: true,
+                        });
+                        $('#code').val(str);
+                    } catch (e) {
+                        console.log(e)
+                        layer.msg(e.message)
+                    }
+
+                }
+            })
+            $('#reset').click(res => {
+                $('#code').val('');
+            })
+            $('#run').click(res => {
+                let code = $('#code').val();
+                api.post('db/runSql', {code}, res => {
+                    //console.log(res)
+                    if(res instanceof Array && res.length > 0) {
+                        window.renderTable(res)
+                    }
+                    else if(res instanceof Object) {
+                        $('#result').html(JSON.stringify(res))
+                    }else{
+                        $('#result').html(res)
+                    }
+
+                })
+            });
+            
+            window.renderTable = function(res) {
+                //console.log(res)
+                let rows = res[0], cols = [];
+                for(let p in rows) {
+                    cols.push({
+                        title: p,
+                        field : p,
+                        align: 'center'
+                    });
+                }
+                //console.log(cols)
+                //console.log(res)
+                table.render({
+                    elem: '#table-data',
+                    cols: [cols],
+                    data : res,
+                    page: true
+                })
+                
+            }
+        })
+    </script>
+</body>
+
+</html>

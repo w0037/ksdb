@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>添加菜单</title>
+    <link rel="stylesheet" href="/static/css/layui.css" />
+    <link rel="stylesheet" href="/static/css/common.css" />
+</head>
+
+<body>
+    <form class="layui-form" action="" lay-filter="editform">
+        <div class="mainBox">
+            <div class="main-container">
+                <div class="main-container">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">菜单名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" lay-verify="required" autocomplete="off"
+                                placeholder="请输入菜单名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">上级菜单</label>
+                        <div class="layui-input-block">
+                            <span class="layui-btn layui-btn-success layui-btn-md" id="chooseRule">
+                                <span id="ruleText">顶层菜单</span>
+                                <i class="layui-icon layui-icon-down layui-font-12"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">后端路由</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="route" lay-verify="required" autocomplete="off"
+                                placeholder="请输入前端模版" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">前端模版</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="href" autocomplete="off" placeholder="请输入前端模版" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">菜单icon</label>
+                        <div class="layui-input-inline" style="width: auto">
+                            <input type="text" name="icon" autocomplete="off" class="layui-input icon-selected"
+                                value="layui-icon layui-icon-username" />
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">菜单类型</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="type" value="1" title="菜单">
+                            <input type="radio" name="type" value="2" title="按钮">
+                            <input type="radio" name="type" value="3" title="权限">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">菜单排序</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="order_num" value="0" lay-verify="required|number"
+                                autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="button-container">
+                <input type="hidden" name="pid" id="pid" lay-verify="required|number">
+                <button type="submit" class="layui-btn layui-btn-lg layui-btn-warm" lay-submit=""
+                    lay-filter="user-save">
+                    <i class="layui-icon layui-icon-ok"></i>
+                    提交
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <script src="/static/js/layui.js"></script>
+    <script>
+        layui.config({
+            base: "/static/js/"
+        }).extend({
+            api: 'api',
+            iconselect: 'iconselect',
+            treeselect : 'treeselect'
+        }).use([
+            'api', 'iconselect', 'treeselect'
+        ], function () {
+            let form = layui.form,
+                $ = layui.jquery,
+                api = layui.api,
+                iconselect = layui.iconselect,
+                dropdown = layui.treeselect;
+            //console.log(req)
+
+            api.get('menu/one?id=0', res => {
+                //console.log(res)
+                form.val("editform", {
+                    pname: res.pname
+                });
+                iconselect.render(".icon-selected");
+                //渲染权限
+                dropdown.render({
+                    elem: '#chooseRule',
+                    data: res.list,
+                    trigger: 'hover',
+                    click: (d, el) => {
+                        $('#ruleText').text(d.title);
+                        $('#pid').val(d.id);
+                        return;
+                    }
+                })
+
+            })
+
+            form.on('submit(user-save)', function (data) {
+                let post = data.field;
+                //console.log(post)
+                api.post('menu/add', post, res => {
+                    parent.location.reload();
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+
+                })
+                return false;
+            });
+        })
+    </script>
+    <script>
+    </script>
+</body>
+
+</html>

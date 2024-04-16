@@ -1,0 +1,8 @@
+app/
+.history/
+runtime/
+node_modules/
+logs/
+.gitattributes
+*.gitkeep
+.env
