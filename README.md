@@ -1,7 +1,7 @@
-# ksDB
+# mysql_ksDB
 
 ## 特点
-ksDB是一款MySQL数据库管理工具，具有以下特点：
+mysql_ksDB是一款MySQL数据库管理工具，具有以下特点：
 
 - 支持数据库备份还原和添加数据库功能。
 - 自动生成数据库设计文档，支持Markdown格式以及实时预览，并可下载成PDF或Word文件。
@@ -23,7 +23,7 @@ ksDB是一款MySQL数据库管理工具，具有以下特点：
    ```
    pnpm i
    ```
-3. 导入`data/ksDB.sql`数据库文件，并修改`src/config/adapter.js`中的数据库配置信息。
+3. 导入`data/mysql_ksDB.sql`数据库文件，并修改`src/config/adapter.js`中的数据库配置信息。
 
 ## 启动服务
 ```
@@ -63,7 +63,7 @@ pm2 start pm2.json
      // sqlite: {
      //   handle: sqlite, // Adapter handle
      //   path: path.join(think.ROOT_PATH, 'data/sqlite'), // sqlite 保存的目录
-     //   database: 'ksDB', // 数据库名
+     //   database: 'mysql_ksDB', // 数据库名
      //   connectionLimit: 1, // 连接池的连接个数，默认为 1
      //   prefix: 'rt_', // 数据表前缀，如果一个数据库里有多个项目，那项目之间的数据表可以通过前缀来区分
      // }
@@ -76,5 +76,5 @@ pm2 start pm2.json
 - 本项目永久免费开源。
 - 允许企业和个人单独使用。
 - 如用于商业活动或二次开发后发售，请购买相关版权。
-- 不提供私下维护工作，如有Bug，请通过[issues](https://gitee.com/prilidianohussey_admin/ksDBs)提交。
+- 不提供私下维护工作，如有Bug，请通过[issues](https://gitee.com/prilidianohussey_admin/mysql_ksDBs)提交。
 - 请尊重作者的劳动成果。

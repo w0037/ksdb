@@ -1,8 +1,8 @@
 {
   "apps": [{
-    "name": "ksDB",
+    "name": "mysql_ksDB",
     "script": "production.js",
-    "cwd": "/data/ksDB",
+    "cwd": "/data/mysql_ksDB",
     "exec_mode": "fork",
     "max_memory_restart": "2G",
     "autorestart": true,

@@ -1,5 +1,5 @@
 {
-  "name": "ksDB",
+  "name": "mysql_ksDB",
   "description": "power by prilidianohussey",
   "version": "1.0.0",
   "author": "prilidianohussey74@gmail.com",
@@ -60,7 +60,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/w0037/ksdb"
+    "url": "https://github.com/w0037/mysql_ksDB"
   },
   "license": "MIT",
   "engines": {
@@ -69,12 +69,12 @@
   "readmeFilename": "README.md",
   "thinkjs": {
     "metadata": {
-      "name": "ksDB",
+      "name": "mysql_ksDB",
       "description": "power by prilidianohussey",
       "author": "prilidianohussey74@gmail.com",
       "babel": true
     },
-    "projectName": "ksDB",
+    "projectName": "mysql_ksDB",
     "template": "/usr/local/lib/node_modules/think-cli/default_template",
     "clone": false,
     "isMultiModule": false
