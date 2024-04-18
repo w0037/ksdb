@@ -1,7 +1,7 @@
 {
   "name": "mysql-ksdb",
   "description": "power by prilidianohussey",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "prilidianohussey74@gmail.com",
   "main": "main.js",
   "scripts": {
